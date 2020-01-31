@@ -3,7 +3,7 @@ import {
   configureStore,
   getDefaultMiddleware
 } from "@reduxjs/toolkit";
-import { firebaseReducer, getFirebase } from "react-redux-firebase";
+import { actionTypes, firebaseReducer, getFirebase } from "react-redux-firebase";
 import { firestoreReducer, getFirestore } from "redux-firestore";
 
 const initialState = {};
@@ -20,15 +20,8 @@ const configureAppStore = (preloadedState = initialState) => {
         thunk: {
           extraArgument: { getFirebase, getFirestore }
         },
-        /*
-         * Ignoring paths works only for `firebase.profile.token`,
-         * not for `auth` and `profile.token`
-         *
-         * The following setting disables the middleware
-         * serializableCheck: false
-         */
         serializableCheck: {
-          ignoredPaths: ["firebase.profile.token", "auth", "profile.token"]
+          ignoredActions: [actionTypes.LOGIN, actionTypes.SET_PROFILE],
         }
       })
     ],
